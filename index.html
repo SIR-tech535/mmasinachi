@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mmasinachi Restaurants</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #8B0000;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .container {
+      padding: 20px;
+    }
+    .product {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      margin-left: 10px;
+    }
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .popup input {
+      padding: 10px;
+      margin: 10px;
+      width: 90%;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a30000;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to Mmasinachi Restaurants</h1>
+</header>
+
+<div class="container">
+  <form id="orderForm">
+     <div class="product">
+      <img src="https://od.lk/d/NTRfMzEwODAwNTZf/abacha.png" alt="Jollof Rice" width="100px" height="100px">
+      <div class="product-details">
+        <label>Jollof Rice (₦1500):</label>
+        <input type="number" min="0" name="jollof" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://od.lk/d/NTRfMzEwODAwNTVf/480338500_615381884546262_830257878663659398_n.jpeg" alt="Fried Rice" width="100px" height="100px">
+      <div class="product-details">
+        <label> (₦1600):</label>
+        <input type="number" min="0" name="fried" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+     <img src="https://od.lk/d/NTRfMzEwODAwNTdf/rice-meal.jpeg" alt="Fried Rice" width="100px" height="100px">
+      <div class="product-details">
+        <label>Egusi Soup + Swallow (₦2000):</label>
+        <input type="number" min="0" name="egusi" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://od.lk/d/NTRfMzEwODAwNThf/FullSizeRender.jpeg" alt="Chicken" width="100px" height="100px">
+      <div class="product-details">
+        <label>Chicken (₦1000):</label>
+        <input type="number" min="0" name="chicken" value="0">
+      </div>
+    </div>
+
+    <br>
+    <button type="submit">Place Order via WhatsApp</button>
+  </form>
+</div>
+
+<!-- Popup Form -->
+<div class="popup" id="popupForm">
+  <div class="popup-content">
+    <h3>Enter Your Details</h3>
+    <input type="text" id="userName" placeholder="Your Name" required>
+    <input type="email" id="userEmail" placeholder="Your Email" required>
+    <br>
+    <button onclick="closePopup()">Continue</button>
+  </div>
+</div>
+
+<script>
+  // Show popup on load
+  window.onload = () => {
+    document.getElementById('popupForm').style.display = 'flex';
+  };
+
+  function closePopup() {
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+
+    if (name && email) {
+      document.getElementById('popupForm').style.display = 'none';
+    } else {
+      alert('Please enter both name and email.');
+    }
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+
+    const jollof = this.jollof.value;
+    const fried = this.fried.value;
+    const egusi = this.egusi.value;
+    const chicken = this.chicken.value;
+
+    let order = `Hello, I want to order from Mmasinachi Restaurants:%0A`;
+    order += `Name: ${name}%0AEmail: ${email}%0A%0AOrder Details:%0A`;
+
+    if (jollof > 0) order += `Jollof Rice x${jollof}%0A`;
+    if (fried > 0) order += `Fried Rice x${fried}%0A`;
+    if (egusi > 0) order += `Egusi Soup + Swallow x${egusi}%0A`;
+    if (chicken > 0) order += `Chicken x${chicken}%0A`;
+
+    if (jollof == 0 && fried == 0 && egusi == 0 && chicken == 0) {
+      alert("Please select at least one item to order.");
+      return;
+    }
+
+    const phone = "2348156942732"; // Replace leading 0 with 234
+    const url = `https://wa.me/${phone}?text=${order}`;
+    window.open(url, '_blank');
+  });
+</script>
+
+</body>
+</html>
